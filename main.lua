@@ -2,16 +2,21 @@ local ffi = require("ffi")
 local uv = require("uv")
 
 ffi.cdef [[
-    void lux_create(bool debug);
+    void lux_create(const bool debug);
     void lux_navigate(const char* url);
-    void lux_dispatch(int type, const char* payload);
+    void lux_dispatch(const int type, const char* payload);
     void lux_run();
+
+
+    // for testing:
+    void lux_set_title(const char* title);
 ]]
 
-local lib = ffi.load("./liblux_webview.dylib")
+local lib = ffi.load("/Users/richyz/Documents/GitHub/numelon-oss/lya-core/cmake-build-debug/liblya_core.dylib")
 
 lib.lux_create(true)
 lib.lux_navigate("https://numelon.com")
+lib.lux_set_title("Lya UI Test")
 
 uv.new_thread(function()
     local ffi = require("ffi")
@@ -20,10 +25,7 @@ uv.new_thread(function()
         void lux_dispatch(int type, const char* payload)
     ]]
 
-    local lib = ffi.load("./liblux_webview.dylib")
-
-    --require = require("require") -- luvit's custom require
-    -- thi didnt actually work oof
+    local lib = ffi.load("/Users/richyz/Documents/GitHub/numelon-oss/lya-core/cmake-build-debug/liblya_core.dylib")
 
     local luvi = require("luvi")
 
@@ -32,7 +34,7 @@ uv.new_thread(function()
     end
 
     local c = os.time()
-    repeat until os.time() >= c + 3
+    repeat until os.time() >= c + 10
 
     --timer.sleep(10000)
 
