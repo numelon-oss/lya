@@ -41,16 +41,37 @@ function lya.main(main_fn)
             void lux_dispatch(const int type, const char* payload);
         ]]
 
-        -- for i, v in pairs(package) do
-        --     print(i, v)
-        -- end
-        -- require("coro-http")
-
         ---@diagnostic disable-next-line: redefined-local
         local lib = ffi.load(
             "/Users/richyz/Documents/GitHub/numelon-oss/lya-core/cmake-build-debug/liblya_core.dylib")
 
-        load(fn)()
+        -- print(require("luvit/init"))
+
+        -- load(fn)()
+
+        -- add support for ./libs later
+        --[[package.path = "./deps/?.lua;" ..
+            "./deps/?;" .. "./?/init.lua;" .. "./luvit/deps/?.lua;" .. "./luvit/deps/?/init.lua;" .. package.path
+]]
+
+        local luvi = require("luvi")
+        _G.luvi = luvi
+
+        --require("luvi/luvipath")
+
+        local uv = require("uv")
+        --local require, module = require("luvit/deps/require")(uv.cwd() .. "../")
+        --_G.require, _G.module = require, module
+
+        --print(require("http-server"))
+
+        --local luvit = require("luvit")
+        --luvit(fn)
+
+        --print(require("http-server")())
+        --luvit(load(fn))
+
+        print(require("http-server"))
     end, string.dump(main_fn)) -- i know this isnt necessarily the best solution..
     -- string.dump(...) -- oof...
 
